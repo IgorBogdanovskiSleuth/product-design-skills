@@ -140,7 +140,33 @@ Generate comprehensive developer handoff documentation and specifications.
 ## Additional Ideas
 
 - user-journey-mapper - Create user journey maps with stages, pain points, emotions
-- jobs-to-be-done - Document JTBD framework analysis
+### 7. jobs-to-be-done
+Document and analyze products using the Jobs-to-be-Done framework.
+
+**Features:**
+- Create structured JTBD statements (When [situation], I want to [motivation], so I can [outcome])
+- Document job stories with context, motivation, and desired outcomes
+- Map jobs to product features and design decisions
+- Identify functional, emotional, and social jobs
+- Track job performance metrics (importance vs. satisfaction)
+- Capture forces diagram (push/pull, anxieties/habits)
+- Generate opportunity scores and prioritization
+- Export to Markdown, Notion, Miro-compatible formats
+- Link jobs to user research, personas, and design artifacts
+- Create JTBD canvases and journey maps
+
+**Triggers:** "create job story", "jtbd analysis", "jobs to be done", "document job"
+
+**Use cases:**
+- Analyzing user needs from a jobs perspective
+- Creating job stories for product requirements
+- Prioritizing features based on job importance and satisfaction gaps
+- Documenting discovery research in JTBD format
+- Aligning team around customer jobs rather than personas
+- Identifying innovation opportunities through unmet jobs
+- Translating user research into actionable job statements
+
+**Complements:** user-persona-builder (jobs-focused vs. demographic-focused approaches)
 - heuristic-evaluator - Run structured heuristic evaluations (Nielsen's 10, etc.)
 - accessibility-auditor - Check designs against WCAG guidelines
 - design-system-changelog - Track changes to design system components
