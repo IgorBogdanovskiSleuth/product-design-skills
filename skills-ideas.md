@@ -109,6 +109,34 @@ Document design critiques, feedback sessions, and design reviews.
 
 ---
 
+### 6. design-handoff-specs
+Generate comprehensive developer handoff documentation and specifications.
+
+**Features:**
+- Extract design specs from Figma (spacing, sizing, colors, typography)
+- Generate redline/measurement annotations
+- Document component states, interactions, and animations
+- Create responsive breakpoint specifications
+- Export asset requirements and guidelines
+- Generate design tokens and style variables
+- Include accessibility requirements (ARIA labels, focus states, etc.)
+- Create platform-specific specs (iOS, Android, Web)
+- Export to developer-friendly formats (JSON, CSS variables, Markdown)
+
+**Triggers:** "create handoff", "generate specs", "developer handoff", "redline specs"
+
+**Use cases:**
+- Preparing designs for development handoff
+- Creating detailed implementation specifications
+- Documenting interaction states and animations
+- Generating design tokens for design systems
+- Ensuring design-development alignment
+- Reducing back-and-forth questions from developers
+
+**Integration:** Works with Figma MCP for direct design extraction and measurement
+
+---
+
 ## Additional Ideas
 
 - user-journey-mapper - Create user journey maps with stages, pain points, emotions
@@ -116,7 +144,6 @@ Document design critiques, feedback sessions, and design reviews.
 - heuristic-evaluator - Run structured heuristic evaluations (Nielsen's 10, etc.)
 - accessibility-auditor - Check designs against WCAG guidelines
 - design-system-changelog - Track changes to design system components
-- design-handoff-specs - Generate developer handoff documentation
 - competitive-analysis - Track competitor features and design patterns
 - design-brief-generator - Create project briefs from requirements
 - information-architecture - Document IA, sitemaps, navigation hierarchies
