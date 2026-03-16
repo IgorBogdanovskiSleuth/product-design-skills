@@ -25,7 +25,12 @@ Check for config file at `~/.design-session-logger.json`.
    - **Date-based**: `{date}/{project} - {page}.md`
    - **Custom**: Let them define their own pattern
 
-3. **Create the config file**:
+3. **Ask about Notion sync** (optional):
+   - "Do you want to also sync to Notion automatically?"
+   - If yes: "I'll need your Notion integration token and parent page ID"
+   - If no: Set `notion.enabled` to `false`
+
+4. **Create the config file**:
 ```json
 {
   "save_location": "/path/to/notes",
@@ -39,7 +44,12 @@ Check for config file at `~/.design-session-logger.json`.
     "Components changed",
     "Potential next steps",
     "Notes"
-  ]
+  ],
+  "notion": {
+    "enabled": false,
+    "integration_token": "",
+    "parent_page_id": ""
+  }
 }
 ```
 
@@ -108,11 +118,53 @@ Use the title format and sections from config. Example:
 - Focus on high-level decisions and changes, not minutiae
 
 ### Step 6: Write the File
-Create any necessary folders, then write the file.
+Create any necessary folders, then write the file to Obsidian.
 
-### Step 7: Confirm and Continue
-- If user said **"log"**: Confirm the save and continue the session
-- If user said **"exit"**: Confirm the save and say goodbye
+### Step 7: Sync to Notion (if enabled)
+Check if `config.notion.enabled` is `true`.
+
+If Notion sync is enabled:
+1. **Find or create project folder page**:
+   - Search for a child page with title matching `{project}` under the parent page
+   - If not found, create it using Notion API:
+     ```bash
+     curl -X POST https://api.notion.com/v1/pages \
+       -H "Authorization: Bearer {token}" \
+       -H "Content-Type: application/json" \
+       -H "Notion-Version: 2022-06-28" \
+       --data '{"parent": {"page_id": "{parent_page_id}"}, "properties": {"title": [{"text": {"content": "{project}"}}]}}'
+     ```
+   - Extract the `id` from response and save as `project_page_id`
+
+2. **Find existing session log page**:
+   - Search for a child page under `project_page_id` with title `{page} - {date}`
+   - If found, this is an update scenario
+
+3. **Convert markdown content to Notion blocks**:
+   - `## Heading` → heading_2 block
+   - `- Item` → bulleted_list_item block
+   - `- [ ] Todo` → to_do block (unchecked)
+   - Regular text → paragraph block
+   - Limit to first 100 blocks (Notion API restriction)
+
+4. **Create or update the page**:
+   - **If page exists**: Append new blocks to existing page using PATCH /v1/blocks/{page_id}/children
+   - **If new page**: Create page with blocks using POST /v1/pages
+
+Example creation:
+```bash
+python3 << 'PYTHON' | curl -X POST https://api.notion.com/v1/pages \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  --data @-
+[Python script to convert markdown to JSON blocks]
+PYTHON
+```
+
+### Step 8: Confirm and Continue
+- If user said **"log"**: Confirm saves to both Obsidian and Notion (if enabled), continue session
+- If user said **"exit"**: Confirm saves and say goodbye
 
 ## Platform-Specific Notes
 
@@ -120,9 +172,20 @@ Create any necessary folders, then write the file.
 Files are saved directly as `.md` and will appear immediately in Obsidian.
 
 ### Notion
+**Automatic sync** (if enabled in config):
+- Logs are automatically created/updated in Notion via API
+- Maintains same folder structure: project pages contain session logs
+- Works alongside Obsidian logging (dual sync)
+
+**Manual import** (if Notion sync disabled):
 - Save as `.md` files to the configured location
 - User can drag-and-drop into Notion or use Notion's import feature
-- Alternatively, if user provides a Notion API token, you could integrate directly
+
+**Setup for automatic sync**:
+1. Create integration at https://www.notion.so/my-integrations
+2. Copy integration token
+3. Share target page with the integration
+4. Add token and page ID to config
 
 ### Confluence
 - Generate markdown files
@@ -146,6 +209,7 @@ User can edit `~/.design-session-logger.json` anytime to change:
 - Section names
 - Date format
 - Title format
+- Notion integration settings (enable/disable, token, parent page)
 
 Or ask you to update it for them by saying "update my design log config".
 

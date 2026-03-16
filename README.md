@@ -10,6 +10,8 @@ Automatically log your design work sessions to any note-taking system (Obsidian,
 
 **Features:**
 - Flexible configuration for any note-taking system
+- **Notion integration**: Automatically sync logs to Notion via API
+- Dual sync: Save to both Obsidian (local) and Notion (cloud) simultaneously
 - Automatic extraction of design work from conversations
 - Customizable folder structures and file naming
 - Smart updates: merges new work into existing session logs
