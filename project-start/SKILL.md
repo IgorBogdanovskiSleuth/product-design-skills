@@ -61,19 +61,26 @@ Run `git status --short`.
 - **If clean**, continue.
 
 ### Step 3: Find the base branch
-If `base_branch` is `"auto"`, detect it:
+First check whether this repo even has a remote:
+```bash
+git remote
+```
+- **If there's no remote** (empty output), there's nothing to pull from — this is a local-only repo. Tell the user plainly ("This project isn't connected to GitHub yet, so there's no latest code to pull — I'll just get you onto a working branch.") and skip the pull in Step 4.
+- **If there is a remote**, detect the base branch (when `base_branch` is `"auto"`):
 ```bash
 git remote show origin | sed -n 's/.*HEAD branch: //p'
 ```
-Fall back to checking for `main`, then `master`, then `develop` locally. Use whatever exists.
+This prints nothing if it can't reach the remote — don't treat empty as an answer. Fall back to checking for `main`, then `master`, then `develop` locally, and use whatever exists.
 
 ### Step 4: Get the latest code
-Switch to the base branch and pull:
+**Only if the repo has a remote** (from Step 3). Switch to the base branch and pull:
 ```bash
 git checkout <base_branch>
 git pull --ff-only
 ```
 Explain: "Grabbing the latest version so you're not building on top of something out of date."
+
+**If the branch has no upstream** (git says "no tracking information"), it's never been pushed — there's nothing to pull. Say so briefly and move on; don't surface the raw error.
 
 **If the pull reports a conflict or can't fast-forward**, do NOT dump git errors on the user. Explain in human terms: "Your local copy and the team's copy have both changed the same area — they need to be reconciled." Then offer to walk through it or pause so they can get a teammate. Never force anything.
 
@@ -108,6 +115,7 @@ Trigger this flow when the user says "I'm done", "push this", "commit", "log", o
 4. Commit.
 
 ### Step B: Push
+Only if the repo has a remote (see Step 3). If it doesn't, tell the user the work is committed locally but can't be uploaded until the project is connected to GitHub, then skip to logging.
 ```bash
 git push -u origin <current-branch>
 ```
