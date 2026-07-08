@@ -29,6 +29,31 @@ Automatically log your design work sessions to any note-taking system (Obsidian,
 
 See [design-session-logger/SKILL.md](./design-session-logger/SKILL.md) for full documentation.
 
+### Project Start
+
+Kick off any coding project safely — built for designers who don't live in git. Run it at the start of every piece of work, from a full feature to a one-line CSS tweak.
+
+**Features:**
+- Pulls the latest code and checks for unsaved work before doing anything risky
+- Creates a tidy working branch for you (never touches `main` directly)
+- Plain-language narration of every git step — learn as you go
+- Handles commit, push, and PR creation at session end (never auto-merges)
+- Logs every session (until you push) to Notion, Confluence, or Obsidian
+- Detects the base branch automatically (`main` / `master` / `develop`)
+- Remembers your logging tool and branch prefix after the first run
+
+**Usage:**
+1. Install the skill
+2. In a code repo, say "start a project" (or Claude will suggest it when you begin coding)
+3. Tell it what you're working on — it sets up your branch
+4. Say "I'm done" or "push this" to commit, push, log, and optionally open a PR
+
+**First-time setup** will prompt you for:
+- Where to log sessions (Notion, Confluence, or Obsidian)
+- A short branch-name prefix (e.g. `igor`)
+
+See [project-start/SKILL.md](./project-start/SKILL.md) for full documentation.
+
 ## Installation
 
 ### Installing Individual Skills
